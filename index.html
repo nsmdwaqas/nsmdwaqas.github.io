@@ -2,112 +2,103 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>nsmdwaqas - Consultant in India</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Link to external CSS if available -->
-  <link rel="stylesheet" href="styles.css">
+  <title>Mohammed Waqas - Portfolio</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
-    /* Reset and full viewport styling */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    .animate-bounce {
+      animation: bounce 1s infinite;
     }
-    html, body {
-      height: 100%;
-    }
-    body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      color: #333;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .container {
-      width: 100%;
-      max-width: 800px;
-      text-align: center;
-      padding: 20px;
-    }
-    .profile-header {
-      padding: 20px 0;
-    }
-    .profile-header img {
-      border-radius: 50%;
-      width: 150px;
-      height: 150px;
-      object-fit: cover;
-    }
-    .profile-header h1 {
-      margin: 10px 0 5px;
-      font-size: 2em;
-    }
-    .profile-header h2 {
-      margin: 0;
-      color: #777;
-      font-weight: normal;
-    }
-    .profile-description {
-      margin: 20px 0;
-      line-height: 1.5;
-    }
-    .action-section {
-      margin: 30px 0;
-    }
-    .visit-button {
-      display: inline-block;
-      padding: 10px 20px;
-      background: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      text-decoration: none;
-      font-size: 1em;
-      cursor: pointer;
-    }
-    .visit-buttonAI {
-      display: inline-block;
-      padding: 10px 20px;
-      background: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      text-decoration: none;
-      font-size: 1em;
-      cursor: pointer;
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(-25%);
+        animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+      }
+      50% {
+        transform: translateY(0);
+        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+      }
     }
   </style>
 </head>
-<body>
-  <!-- Main container centered on screen -->
-  <div class="container">
-    <header class="profile-header">
-      <!-- Updated profile image from provided link -->
-      <img src="https://media.licdn.com/dms/image/v2/D5603AQHDlACDKINbZg/profile-displayphoto-shrink_200_200/B56ZYg97daGUAY-/0/1744309829464?e=2147483647&v=beta&t=YRJIm-s64QswE--5rmk8jckDbu8_O3Qa_7IpvsbFZ5g" alt="nsmdwaqas Profile Picture">
-      <h1>Mohammed Waqas</h1>
-      <h2>Supply Chain Consultant from India</h2>
-    </header>
+<body class="bg-gray-100 min-h-screen">
+  
+  <section class="min-h-screen flex items-center pt-16">
+    <div class="container mx-auto px-4 py-12 md:py-24">
+      <div class="flex flex-col md:flex-row items-center">
+        <div class="w-full md:w-1/2 text-center md:text-left">
+          <div class="mb-8 relative">
+            <div class="inline-block">
+              <div class="relative">
+                <div class="w-40 h-40 rounded-full bg-yellow-300 flex items-center justify-center p-1 border-4 border-white shadow-lg">
+                  <img 
+                    src="https://media.licdn.com/dms/image/v2/D5603AQHDlACDKINbZg/profile-displayphoto-shrink_200_200/B56ZYg97daGUAY-/0/1744309829464?e=2147483647&v=beta&t=YRJIm-s64QswE--5rmk8jckDbu8_O3Qa_7IpvsbFZ5g" 
+                    alt="Mohammed Waqas" 
+                    class="rounded-full object-cover w-full h-full"
+                  />
+                </div>
+                <div class="absolute -bottom-2 right-0 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                  Available
+                </div>
+              </div>
+            </div>
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-3 text-gray-800">
+            Mohammed<br>Waqas
+          </h1>
+          <h2 class="text-lg md:text-xl text-blue-600 font-medium mb-6">
+            Supply Chain Consultant
+          </h2>
+          <p class="text-lg text-gray-600 max-w-lg mx-auto md:mx-0 mb-8">
+            Powering <span class="font-semibold">Fortune Global 500</span> success with solutions spanning <span class="font-semibold">50+ Countries</span>, delivering excellence from design to implementation.
+          </p>
+          <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
+            <a href="https://nsmdwaqas.wixsite.com/portfolio" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg inline-block">
+              Visit My Portfolio
+            </a>
+            <a href="https://waqas-ai-mirror-project.lovable.app/" target="_blank" class="bg-white hover:bg-gray-50 text-blue-600 px-6 py-3 rounded-lg border border-blue-200 hover:border-blue-400 inline-block">
+              AI Profile
+            </a>
+          </div>
+        </div>
+        
+        <div class="hidden md:flex w-full md:w-1/2 justify-center mt-12 md:mt-0">
+          <div class="relative w-full max-w-md">
+            <div class="absolute -z-10 w-full h-full bg-blue-100 rounded-full opacity-20" style="filter: blur(40px);"></div>
+            <div class="bg-white/80 backdrop-filter backdrop-blur-sm border border-gray-200 rounded-xl shadow-lg p-8">
+              <h3 class="text-xl font-semibold mb-4 text-blue-800">Fast Facts</h3>
+              <ul class="space-y-3">
+                <li class="flex items-start">
+                  <div class="h-6 w-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-3 mt-0.5">1</div>
+                  <p>Global experience across 50+ countries</p>
+                </li>
+                <li class="flex items-start">
+                  <div class="h-6 w-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-3 mt-0.5">2</div>
+                  <p>Fortune Global 500 client portfolio</p>
+                </li>
+                <li class="flex items-start">
+                  <div class="h-6 w-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-3 mt-0.5">3</div>
+                  <p>End-to-end supply chain expertise</p>
+                </li>
+                <li class="flex items-start">
+                  <div class="h-6 w-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-3 mt-0.5">4</div>
+                  <p>Data-driven optimization specialist</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 hidden md:block animate-bounce">
+        <a href="#about" class="text-gray-400 hover:text-blue-600 transition-colors">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14M5 12l7 7 7-7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
 
-    <section class="profile-description">
-      <p>
-        Expert Supply Chain Consultant. I’ve powered <b>Fortune Global 500</b> success with solutions spanning <b>50+ Countries</b>, nailing every step from design to delivery.
-      </p>
-    </section>
-
-    <section class="action-section">
-      <a href="https://nsmdwaqas.wixsite.com/portfolio" target="_blank" class="visit-button">Visit my website</a>
-    </section>
-
-    <section class="action-section">
-      <a href="http://aiknowsme.blogspot.com/" target="_blank" class="visit-buttonAI">Know more from AI</a>
-    </section>
-
-    
-  </div>
-
-  <!-- Removed About.me Navigation pane, Cookies popup and bottom Sign-up pane -->
-
-  <script src="main.js"></script>
 </body>
 </html>
