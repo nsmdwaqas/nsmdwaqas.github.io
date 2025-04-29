@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mohammed Waqas - Portfolio</title>
+  <title>Mohammed Waqas - Supply Chain Consultant</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     .animate-bounce {
@@ -25,14 +25,31 @@
   
   <section class="min-h-screen flex items-center pt-16">
     <div class="container mx-auto px-4 py-12 md:py-24">
+      <div class="flex justify-end mb-4">
+        <div id="visitor-counter" class="flex items-center justify-center bg-blue-50 border border-blue-200 rounded-lg py-2 px-4 shadow-sm">
+          <div class="mr-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-500">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <div>
+            <span class="text-sm text-gray-600">Visitors:</span>
+            <span id="count" class="ml-1 text-blue-600 font-semibold">0</span>
+          </div>
+        </div>
+      </div>
+      
       <div class="flex flex-col md:flex-row items-center">
         <div class="w-full md:w-1/2 text-center md:text-left">
           <div class="mb-8 relative">
             <div class="inline-block">
               <div class="relative">
-                <div class="w-40 h-40 rounded-full bg-yellow-300 flex items-center justify-center p-1 border-4 border-white shadow-lg">
+                <div class="w-40 h-40 rounded-full bg-black flex items-center justify-center p-1 border-4 border-white shadow-lg">
                   <img 
-                    src="https://media.licdn.com/dms/image/v2/D5603AQHDlACDKINbZg/profile-displayphoto-shrink_200_200/B56ZYg97daGUAY-/0/1744309829464?e=2147483647&v=beta&t=YRJIm-s64QswE--5rmk8jckDbu8_O3Qa_7IpvsbFZ5g" 
+                    src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgR_cYf4yY0G0Mg4P3dw0MkTZOOtE2uT1GJBqZtoQm2pVjvE9o51B4jXsjFj2bdFIjEzUx7wEqc5TiiUJl9CeRFkYdnE3op6bL_Zi-DLH8Amymc_AK83l77oQG0v0GxAPIminIPvn2KhBOwOrUM07wxHgLyeDWsirzGN2A_I6TaLjm2MspGPhT2d8yBbL4P/w945-h600-p-k-no-nu/Waqas%20Photo.jpeg" 
                     alt="Mohammed Waqas" 
                     class="rounded-full object-cover w-full h-full"
                   />
@@ -53,11 +70,14 @@
             Powering <span class="font-semibold">Fortune Global 500</span> success with solutions spanning <span class="font-semibold">50+ Countries</span>, delivering excellence from design to implementation.
           </p>
           <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
-            <a href="https://nsmdwaqas.wixsite.com/portfolio" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg inline-block">
-              Visit My Portfolio
+            <a href="https://nsmdwaqas.wixsite.com/portfolio" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg inline-block">
+              Visit my Portfolio
             </a>
-            <a href="https://waqas-ai-mirror-project.lovable.app/" target="_blank" class="bg-white hover:bg-gray-50 text-blue-600 px-6 py-3 rounded-lg border border-blue-200 hover:border-blue-400 inline-block">
-              AI Profile
+            <a href="https://waqas-ai-mirror-project.lovable.app/" target="_blank" rel="noopener noreferrer" class="bg-white hover:bg-gray-50 text-blue-600 px-6 py-3 rounded-lg border border-blue-200 hover:border-blue-400 inline-block">
+              Know from AI 
+            </a>
+            <a href="https://famous-taffy-e97f7f.netlify.app/" target="_blank" rel="noopener noreferrer" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg inline-block">
+              Connect
             </a>
           </div>
         </div>
@@ -100,5 +120,21 @@
     </div>
   </section>
 
+  <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+  <script>
+    // Visitor counter functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // In a real application, you would fetch this from a database/API
+      // For demo purposes, we'll use localStorage to persist the count
+      const storedCount = localStorage.getItem("visitorCount");
+      const initialCount = storedCount ? parseInt(storedCount, 10) : 0;
+      
+      // Increment count for this visit
+      const newCount = initialCount + 1;
+      document.getElementById('count').textContent = newCount;
+      localStorage.setItem("visitorCount", newCount.toString());
+    });
+  </script>
 </body>
 </html>
