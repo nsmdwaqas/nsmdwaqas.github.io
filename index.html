@@ -122,15 +122,18 @@
 
   <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
   <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-  <script type="text/javascript" src="https://www.freevisitorcounters.com/en/counter/index/123456"></script>
   <script>
     // Visitor counter functionality
     document.addEventListener('DOMContentLoaded', function() {
-      // The freevisitorcounters.com script will handle the visitor count
-      // We can update the #count element with the counter value if needed
-      // Note: freevisitorcounters.com typically renders its own counter UI
-      // To use your custom UI, you may need to fetch the count via their API (if available)
-      // For simplicity, the external script will manage the count
+      // In a real application, you would fetch this from a database/API
+      // For demo purposes, we'll use localStorage to persist the count
+      const storedCount = localStorage.getItem("visitorCount");
+      const initialCount = storedCount ? parseInt(storedCount, 10) : 0;
+      
+      // Increment count for this visit
+      const newCount = initialCount + 1;
+      document.getElementById('count').textContent = newCount;
+      localStorage.setItem("visitorCount", newCount.toString());
     });
   </script>
 </body>
