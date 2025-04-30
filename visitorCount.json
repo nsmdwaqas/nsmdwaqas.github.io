@@ -1,0 +1,42 @@
+// server.js
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+
+const app = express();
+const PORT = 3000;
+
+const visitorCountFile = path.join(__dirname, 'visitorCount.json');
+
+// Initialize visitor count file if not exists
+if (!fs.existsSync(visitorCountFile)) {
+  fs.writeFileSync(visitorCountFile, JSON.stringify({ count: 0 }));
+}
+
+// Middleware to parse JSON
+app.use(express.json());
+
+// API endpoint to get and increment visitor count
+app.post('/api/visitor-count', (req, res) => {
+  fs.readFile(visitorCountFile, 'utf-8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ message: 'Error reading count file' });
+    }
+
+    const visitorData = JSON.parse(data);
+    visitorData.count += 1;
+
+    fs.writeFile(visitorCountFile, JSON.stringify(visitorData), (writeErr) => {
+      if (writeErr) {
+        return res.status(500).json({ message: 'Error updating count file' });
+      }
+
+      res.json({ count: visitorData.count });
+    });
+  });
+});
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
