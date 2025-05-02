@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -120,12 +121,13 @@
     </div>
   </section>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"></script>
-
+  <!-- Import Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  
   <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
   <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+  
   <script>
     // Firebase configuration
     const firebaseConfig = {
@@ -139,38 +141,51 @@
       measurementId: "G-6KMYVB1D6X"
     };
 
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    // Function to update and display visitor count
-    async function updateVisitorCount() {
-      const countRef = db.collection('visitorCounts').doc('counter');
-
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log("DOM loaded, initializing Firebase");
+      
+      // Initialize Firebase
       try {
-        // Increment the counter for every visit
-        await db.runTransaction(async (transaction) => {
-          const countDoc = await transaction.get(countRef);
-          if (!countDoc.exists) {
-            transaction.set(countRef, { count: 1 });
-          } else {
-            transaction.update(countRef, { count: countDoc.data().count + 1 });
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        console.log("Firebase initialized successfully");
+        
+        // Function to update visitor count
+        async function updateVisitorCount() {
+          const countRef = db.collection('visitorCounts').doc('counter');
+          console.log("Attempting to update visitor count...");
+          
+          try {
+            // Increment the counter using a transaction
+            await db.runTransaction(async (transaction) => {
+              const countDoc = await transaction.get(countRef);
+              if (!countDoc.exists) {
+                console.log("Counter document does not exist, creating with count: 1");
+                transaction.set(countRef, { count: 1 });
+              } else {
+                const newCount = countDoc.data().count + 1;
+                console.log(`Incrementing counter to: ${newCount}`);
+                transaction.update(countRef, { count: newCount });
+              }
+            });
+            
+            // Get and display the updated count
+            const countDoc = await countRef.get();
+            const count = countDoc.exists ? countDoc.data().count : 0;
+            console.log(`Current visitor count: ${count}`);
+            document.getElementById('count').textContent = count;
+          } catch (error) {
+            console.error("Error updating visitor count:", error);
+            document.getElementById('count').textContent = 'Error';
           }
-        });
-
-        // Get and display the current count
-        const countDoc = await countRef.get();
-        const count = countDoc.exists ? countDoc.data().count : 0;
-        document.getElementById('count').textContent = count;
+        }
+        
+        // Run the visitor count update
+        updateVisitorCount();
       } catch (error) {
-        console.error("Error updating visitor count: ", error);
+        console.error("Firebase initialization failed:", error);
         document.getElementById('count').textContent = 'Error';
       }
-    }
-
-    // Run the visitor count update when the page loads
-    document.addEventListener('DOMContentLoaded', function() {
-      updateVisitorCount();
     });
   </script>
 </body>
