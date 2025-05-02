@@ -32,7 +32,7 @@
               <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
               <circle cx="9" cy="7" r="4"></circle>
               <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              <path d="M16 3.13a4 4 0 1 1 0 7.75"></path>
             </svg>
           </div>
           <div>
@@ -120,20 +120,57 @@
     </div>
   </section>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"></script>
+
   <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
   <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
   <script>
-    // Visitor counter functionality
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAmjNbhsMjGOACpBGp-fVdINxHtsoGlHhk",
+      authDomain: "waqas-profile.firebaseapp.com",
+      databaseURL: "https://waqas-profile-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "waqas-profile",
+      storageBucket: "waqas-profile.firebasestorage.app",
+      messagingSenderId: "416451426686",
+      appId: "1:416451426686:web:21cb173d4b7a886f095b2f",
+      measurementId: "G-6KMYVB1D6X"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Function to update and display visitor count
+    async function updateVisitorCount() {
+      const countRef = db.collection('visitorCounts').doc('counter');
+
+      try {
+        // Increment the counter for every visit
+        await db.runTransaction(async (transaction) => {
+          const countDoc = await transaction.get(countRef);
+          if (!countDoc.exists) {
+            transaction.set(countRef, { count: 1 });
+          } else {
+            transaction.update(countRef, { count: countDoc.data().count + 1 });
+          }
+        });
+
+        // Get and display the current count
+        const countDoc = await countRef.get();
+        const count = countDoc.exists ? countDoc.data().count : 0;
+        document.getElementById('count').textContent = count;
+      } catch (error) {
+        console.error("Error updating visitor count: ", error);
+        document.getElementById('count').textContent = 'Error';
+      }
+    }
+
+    // Run the visitor count update when the page loads
     document.addEventListener('DOMContentLoaded', function() {
-      // In a real application, you would fetch this from a database/API
-      // For demo purposes, we'll use localStorage to persist the count
-      const storedCount = localStorage.getItem("visitorCount");
-      const initialCount = storedCount ? parseInt(storedCount, 10) : 0;
-      
-      // Increment count for this visit
-      const newCount = initialCount + 1;
-      document.getElementById('count').textContent = newCount;
-      localStorage.setItem("visitorCount", newCount.toString());
+      updateVisitorCount();
     });
   </script>
 </body>
