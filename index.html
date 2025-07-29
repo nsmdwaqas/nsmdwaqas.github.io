@@ -113,70 +113,54 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
 
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAmjNbhsMjGOACpBGp-fVdINxHtsoGlHhk",
-    authDomain: "waqas-profile.firebaseapp.com",
-    databaseURL: "https://waqas-profile-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "waqas-profile",
-    storageBucket: "waqas-profile.firebasestorage.app",
-    messagingSenderId: "416451426686",
-    appId: "1:416451426686:web:21cb173d4b7a886f095b2f",
-    measurementId: "G-6KMYVB1D6X"
-  };
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAmjNbhsMjGOACpBGp-fVdINxHtsoGlHhk",
+      authDomain: "waqas-profile.firebaseapp.com",
+      databaseURL: "https://waqas-profile-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "waqas-profile",
+      storageBucket: "waqas-profile.firebasestorage.app",
+      messagingSenderId: "416451426686",
+      appId: "1:416451426686:web:21cb173d4b7a886f095b2f",
+      measurementId: "G-6KMYVB1D6X"
+    };
 
-  document.addEventListener('DOMContentLoaded', function() {
-    try {
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore();
+    document.addEventListener('DOMContentLoaded', function() {
+      try {
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-      // Log every website visit with UTC timestamp + IP-based location (ip-api.com)
-      fetch('http://ip-api.com/json/')
-        .then(res => res.json())
-        .then(locationData => {
-          db.collection('visitLogs').add({
-            visitedAt: firebase.firestore.FieldValue.serverTimestamp(),
-            ip: locationData.query,
-            country: locationData.country,
-            region: locationData.regionName,
-            city: locationData.city
-          });
-        })
-        .catch(() => {
-          // If location fails, still log timestamp only
-          db.collection('visitLogs').add({
-            visitedAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
+        // Log every website visit with server UTC timestamp
+        db.collection('visitLogs').add({
+          visitedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-      async function updateVisitorCount() {
-        const countRef = db.collection('visitorCounts').doc('counter');
-        try {
-          await db.runTransaction(async (transaction) => {
-            const countDoc = await transaction.get(countRef);
-            if (!countDoc.exists) {
-              transaction.set(countRef, { count: 1 });
-            } else {
-              const newCount = countDoc.data().count + 1;
-              transaction.update(countRef, { count: newCount });
-            }
-          });
-          const countDoc = await countRef.get();
-          const count = countDoc.exists ? countDoc.data().count : 0;
-          document.getElementById('count').textContent = count;
-        } catch (error) {
-          console.error("Error updating visitor count:", error);
-          document.getElementById('count').textContent = 'Error';
+        async function updateVisitorCount() {
+          const countRef = db.collection('visitorCounts').doc('counter');
+          try {
+            await db.runTransaction(async (transaction) => {
+              const countDoc = await transaction.get(countRef);
+              if (!countDoc.exists) {
+                transaction.set(countRef, { count: 1 });
+              } else {
+                const newCount = countDoc.data().count + 1;
+                transaction.update(countRef, { count: newCount });
+              }
+            });
+            const countDoc = await countRef.get();
+            const count = countDoc.exists ? countDoc.data().count : 0;
+            document.getElementById('count').textContent = count;
+          } catch (error) {
+            console.error("Error updating visitor count:", error);
+            document.getElementById('count').textContent = 'Error';
+          }
         }
+        updateVisitorCount();
+      } catch (error) {
+        console.error("Firebase initialization failed:", error);
+        document.getElementById('count').textContent = 'Error';
       }
-      updateVisitorCount();
-    } catch (error) {
-      console.error("Firebase initialization failed:", error);
-      document.getElementById('count').textContent = 'Error';
-    }
-  });
-</script>
-
-  
+    });
+  </script>
 </body>
 </html>
