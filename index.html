@@ -37,45 +37,6 @@
         }
         return gk_fileData[filename] || "";
         }
-        </script><script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
         </script><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -163,6 +124,8 @@
       opacity: 0;
       transform: scale(0);
       border: none;
+      background-color: white;
+      border: 1px solid #e5e7eb;
     }
     
     .fab-sub.show {
@@ -170,23 +133,24 @@
       transform: scale(1);
     }
     
-    .fab-reach {
-      background-color: #05976A;
-    }
-    
-    .fab-reach:hover {
-      background-color: #047d5a;
-      transform: scale(1.1);
-    }
-    
-    .fab-ai {
-      background-color: white;
-      border: 1px solid #e5e7eb;
-    }
-    
-    .fab-ai:hover {
+    .fab-reach:hover, .fab-ai:hover, .fab-whatsapp:hover, .fab-chatgpt:hover, .fab-google:hover {
       background-color: #f9fafb;
       transform: scale(1.1);
+    }
+    
+    .fab-reach svg {
+      width: 20px;
+      height: 20px;
+      fill: #05976A;
+    }
+    
+    .fab-ai span {
+      color: #2664EB;
+    }
+    
+    .fab-sub img {
+      width: 24px;
+      height: 24px;
     }
     
     /* Popup Styles */
@@ -372,6 +336,38 @@
   </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
+  <script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+  </script>
   <section class="min-h-screen flex items-center pt-4">
     <div class="container mx-auto px-4 py-6 md:py-12">
       <div class="flex justify-end mb-4">
@@ -394,20 +390,6 @@
       <div class="flex flex-col md:flex-row items-center">
         <div class="w-full md:w-1/2 text-center md:text-left">
           <div class="flex flex-col md:flex-row items-start">
-            <div class="mb-6 md:mb-0 md:mr-6">
-              <!-- Icon Links -->
-              <div class="flex flex-col justify-start space-y-4">
-                <a href="#" id="whatsappIcon" class="transform hover:scale-110 transition duration-200">
-                  <img src="https://img.icons8.com/color/48/000000/whatsapp.png" alt="WhatsApp" class="w-10 h-10 shadow-md rounded-full" />
-                </a>
-                <a href="https://chatgpt.com/share/681a5d14-bf40-8006-8100-ebe7eaa72073" target="_blank" class="transform hover:scale-110 transition duration-200">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT" class="w-10 h-10 shadow-md rounded-full bg-white p-1" />
-                </a>
-                <a href="https://tinyurl.com/nsmdwaqas" target="_blank" class="transform hover:scale-110 transition duration-200">
-                  <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google" class="w-10 h-10 shadow-md rounded-full" />
-                </a>
-              </div>
-            </div>
             <div class="flex-1">
               <div class="mb-8 relative">
                 <div class="inline-block">
@@ -487,7 +469,6 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Log every website visit with server UTC timestamp
         db.collection('visitLogs').add({
           visitedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
@@ -530,6 +511,15 @@
       </button>
       <button class="fab-sub fab-ai" id="aiBtn" title="Chat with Zara AI">
         <span style="font-size: 20px;">🤖</span>
+      </button>
+      <button class="fab-sub fab-whatsapp" id="whatsappBtn" title="Share on WhatsApp">
+        <img src="https://img.icons8.com/color/48/000000/whatsapp.png" alt="WhatsApp" />
+      </button>
+      <button class="fab-sub fab-chatgpt" id="chatgptBtn" title="View ChatGPT">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT" />
+      </button>
+      <button class="fab-sub fab-google" id="googleBtn" title="Visit Google Link">
+        <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google" />
       </button>
     </div>
     <button class="fab-main" id="fabMain">
@@ -584,6 +574,9 @@
     const fabSubButtons = document.querySelectorAll('.fab-sub');
     const reachBtn = document.getElementById('reachBtn');
     const aiBtn = document.getElementById('aiBtn');
+    const whatsappBtn = document.getElementById('whatsappBtn');
+    const chatgptBtn = document.getElementById('chatgptBtn');
+    const googleBtn = document.getElementById('googleBtn');
     const popupOverlay = document.getElementById('popupOverlay');
     let fabOpen = false;
 
@@ -604,24 +597,44 @@
 
     aiBtn.addEventListener('click', function() {
       openPopup('aiPopup');
-      // Ensure Zara's welcome message is displayed
       const chatContainer = document.getElementById('chatContainer');
       if (!chatContainer.querySelector('.chat-message')) {
         addMessage('Hey there !! I\'m Zara created by Waqas. What brings you here today?', false);
       }
     });
 
+    whatsappBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const message = encodeURIComponent(`Found this amazing portfolio by Waqas! Take a look: http://nsmdwaqas.github.io/`);
+      const whatsappUrl = `https://wa.me/?text=${message}`;
+      window.open(whatsappUrl, '_blank');
+      fabOpen = false;
+      fabMain.classList.remove('active');
+      fabSubButtons.forEach(btn => btn.classList.remove('show'));
+    });
+
+    chatgptBtn.addEventListener('click', function() {
+      window.open('https://chatgpt.com/share/681a5d14-bf40-8006-8100-ebe7eaa72073', '_blank');
+      fabOpen = false;
+      fabMain.classList.remove('active');
+      fabSubButtons.forEach(btn => btn.classList.remove('show'));
+    });
+
+    googleBtn.addEventListener('click', function() {
+      window.open('https://tinyurl.com/nsmdwaqas', '_blank');
+      fabOpen = false;
+      fabMain.classList.remove('active');
+      fabSubButtons.forEach(btn => btn.classList.remove('show'));
+    });
+
     function openPopup(popupId) {
-      // Close any open popup first
       document.querySelectorAll('.popup').forEach(popup => {
         popup.style.display = 'none';
       });
       
-      // Show overlay and popup
       popupOverlay.style.display = 'block';
       document.getElementById(popupId).style.display = 'block';
       
-      // Close FAB
       fabOpen = false;
       fabMain.classList.remove('active');
       fabSubButtons.forEach(btn => btn.classList.remove('show'));
@@ -632,7 +645,6 @@
       document.getElementById(popupId).style.display = 'none';
     }
 
-    // Close popup when clicking overlay
     popupOverlay.addEventListener('click', function() {
       document.querySelectorAll('.popup').forEach(popup => {
         popup.style.display = 'none';
@@ -640,7 +652,6 @@
       popupOverlay.style.display = 'none';
     });
 
-    // Reach Me Form
     document.getElementById('reachForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       
@@ -653,20 +664,16 @@
       }
 
       try {
-        // Save to Firebase
         await firebase.firestore().collection('reachMe').add({
           name: name,
           phone: phone,
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
         
-        // Show success message
         document.getElementById('reachContent').innerHTML = '<div class="success-message">Sent!</div>';
         
-        // Close popup after 2 seconds
         setTimeout(() => {
           closePopup('reachPopup');
-          // Reset form
           document.getElementById('reachContent').innerHTML = `
             <form id="reachForm">
               <div class="form-group">
@@ -680,7 +687,6 @@
               <button type="submit" class="submit-btn">Submit</button>
             </form>
           `;
-          // Re-attach event listener
           document.getElementById('reachForm').addEventListener('submit', arguments.callee);
         }, 2000);
         
@@ -690,7 +696,6 @@
       }
     });
 
-    // AI Chat functionality
     const chatContainer = document.getElementById('chatContainer');
     const chatInput = document.getElementById('chatInput');
     const chatSend = document.getElementById('chatSend');
@@ -707,18 +712,15 @@
       const message = chatInput.value.trim();
       if (!message) return;
       
-      // Add user message
       addMessage(message, true);
       chatInput.value = '';
       
       try {
-        // Save to Firebase
         await firebase.firestore().collection('aiChat').add({
           userMessage: message,
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
         
-        // Add Zara's response
         setTimeout(() => {
           addMessage('Great question! You\'ll find comprehensive information below : <a href="https://tinyurl.com/nsmdwaqas" target="_blank" style="color: #2664EB; text-decoration: underline;">Click here</a>');
         }, 500);
@@ -734,14 +736,6 @@
       if (e.key === 'Enter') {
         sendMessage();
       }
-    });
-
-    // WhatsApp Icon Functionality
-    document.getElementById('whatsappIcon').addEventListener('click', function(e) {
-      e.preventDefault();
-      const message = encodeURIComponent(`Found this amazing portfolio by Waqas! Take a look: http://nsmdwaqas.github.io/`);
-      const whatsappUrl = `https://wa.me/?text=${message}`;
-      window.open(whatsappUrl, '_blank');
     });
   </script>
 </body>
